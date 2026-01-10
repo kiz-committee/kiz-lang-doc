@@ -1,4 +1,5 @@
 # Kiz-Standard-Documents
-kiz standard documents
+kiz 标准文档集
 
-[2026-1](2026-1.md)
+
+1. [kiz26](kiz26.md)
