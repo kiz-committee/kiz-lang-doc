@@ -110,26 +110,26 @@ obj.v  # 0
 复合创建对象语法
 ```
 object Name
-	attr_name = expression
-	fn method(this, param1, param2)
-		statements
-	end
+    attr_name = expression
+    fn method(this, param1, param2)
+        statements
+    end
 end
 ```
 
 ```
 object Dog
-	name = ""
-	# 重载对象的__call__实现类似Python __init__的特性
-	fn __call__(this, n)
-		# 创建一个__parent__属性指向Dog的对象并设置其name属性为参数n
-		o = create(this, {name=n})
-		return o
-	end
-	# 函数第一个参数指向调用源对象，建议命名为this
-	fn bark (this)
-		print(this.name, "is barking")
-	end
+    name = ""
+    # 重载对象的__call__实现类似Python __init__的特性
+    fn __call__(this, n)
+        # 创建一个__parent__属性指向Dog的对象并设置其name属性为参数n
+        o = create(this, {name=n})
+        return o
+    end
+    # 函数第一个参数指向调用源对象，建议命名为this
+    fn bark (this)
+    print(this.name, "is barking")
+    end
 end
 
 my_dog = Dog("Tom")
@@ -141,25 +141,25 @@ my_dog.bark()
 注意if的判断会通过对象的 `__bool__` 方法来判断
 ```
 if expression 
-	statements
+    statements
 else if expression 
-	statements
+    statements
 else if expression
-	statements 
+    statements 
 else
-	statements 
+    statements 
 end
 ```
 
 循环
 ```
 while expression 
-	statements
+    statements
 end
 
 # obj必须是拥有__next__的对象
 for var_name : obj
-	statements
+    statements
 end
 ```
 
@@ -178,7 +178,7 @@ kiz的函数支持递归
 实名函数
 ```
 fn function_name(param1, param2)
-	statements
+    statements
 end
 ```
 
@@ -187,9 +187,9 @@ end
 fn foo(m)
     # 函数是对象，意味着函数可以拥有属性，函数的属性可以实现其他语言函数静态变量类似的功能
     foo.k = 0
-	a = 1 + m
-	# 可以不写return, return 不一定要写在函数最后一行，默认return Nil
-	return a
+    a = 1 + m
+    # 可以不写return, return 不一定要写在函数最后一行，默认return Nil
+    return a
 end
 
 
@@ -200,7 +200,7 @@ foo.k # 0
 匿名函数
 ```
 fn (param1, pararm2)
-	statements
+    statements
 end
 
 # 单行匿名函数简写形式
@@ -209,8 +209,8 @@ end
 
 ```
 foo = fn ()
-	a = 1
-	return a
+    a = 1
+    return a
 end
 
 m = [1,2,3].map( |a| a>0 ) # 单行匿名函数可以简写
@@ -249,16 +249,16 @@ throw expression
 
 ```
 try
-	# do something
-	
+    # do something
+
 catch var_name: ErrorBasedObject
-	# do something
+    # do something
 	
 catch var_name: Error2BasedObject
-	# do something
+    # do something
 
 finally
-	# do something
+    # do something
 end
 ```
 ### 模块系统
@@ -294,14 +294,14 @@ __name__ = "other"
 x = 100
 
 fn a()
-	print("Hello from a")
+    print("Hello from a")
 end
 
 fn foo ()
-	# 支持模块内引用其他数据
+    # 支持模块内引用其他数据
     a()
     
-	print("hello from other.kiz")
+    print("hello from other.kiz")
 end
 ```
 
@@ -402,6 +402,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 - 管道运算符
 - 小整数优化
 - 模板字符串
+- `when .. => .. end` 模式匹配语句
 - `fn obj.a(this) ... end` 直接设置方法语句
 - `..obj` 解包语句
 
