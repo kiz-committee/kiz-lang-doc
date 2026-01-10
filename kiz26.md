@@ -79,7 +79,7 @@ x = Nil
 
 x = |a| a+1 # 单行lambda
 x = fn (a)  # 多行lambda
-	return a
+    return a
 end
 x(1)
 
