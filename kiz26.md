@@ -44,6 +44,7 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 ```
 
 **Hello World**
+
 直接运行kiz.exe，在弹出的repl窗口输入
 ```
 >>> print("Hello World")
@@ -83,7 +84,7 @@ x = fn (a)  # 多行lambda
 end
 x(1)
 
-x = {"a"=0, "b"=1}
+x = {"a"=0, "b"=1, 0=2} # 任意可哈希的值都可以作为键
 x["a"]
 
 a = [1,2,3]
@@ -96,6 +97,7 @@ b = a # Int是不可变对象, kiz自动选择引用
 ```
 
 kiz是动态类型的，意味着你可以为一个变量赋值任何类型的对象。
+
 kiz是强类型的，意味着你不可以 `1 + "1"`。
 ### 对象
 Kiz中，一切皆是对象
@@ -128,7 +130,7 @@ object Dog
     end
     # 函数第一个参数指向调用源对象，建议命名为this
     fn bark (this)
-    print(this.name, "is barking")
+        print(this.name, "is barking")
     end
 end
 
@@ -185,7 +187,7 @@ end
 ```
 # 在没有任何形式参数时，fn foo()的签名可以简写为fn foo
 fn foo(m)
-    # 函数是对象，意味着函数可以拥有属性，函数的属性可以实现其他语言函数静态变量类似的功能
+    # 函数是对象，意味着函数可以拥有属性，利用函数的属性可以实现其他语言函数静态变量类似的功能
     foo.k = 0
     a = 1 + m
     # 可以不写return, return 不一定要写在函数最后一行，默认return Nil
@@ -243,9 +245,28 @@ nonlocal x = 0
 
 ### 错误处理
 抛出错误
+
+
+自定义错误对象的创建建议返回Error对象, 
+
+因为Error对象会储存错误代码的位置信息的调用栈快照,
+
+如果你抛出Error对象, 那么会打印TraceBack, 错误名和错误信息,
+
+如果你抛出其他对象则只会打印错误名和错误信息。
+```
+object MyError
+    fn __call__(this, name, msg)
+        return Error(name, msg)
+    end
+end
+```
+
 ```
 throw expression
 ```
+
+注意: catch不会重复捕获
 
 ```
 try
@@ -350,13 +371,13 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `get_refc(obj)`                               | 函数   | 获取对象的引用计数值，用于调试引用计数机制                                                                                                    | 无                                                      |
 | `breakpoint()`                                | 函数   | 触发虚拟机断点调试，暂停执行并等待调试指令                                                                                                    | 无                                                      |
 | `now()`                                       | 函数   | 返回当前系统时间戳(毫秒级），类型为Int                                                                                                    | 无                                                         |
-| `getattr(obj, attr_name, default_val)`        | 函数   | 获取对象attr_name属性；属性不存在时返回default_val，未传default_val则抛错                                                                     | 无                                                      |
+| `getattr(current_only=False, obj, attr_name, default_val)`        | 函数   | 获取对象attr_name属性；属性不存在时返回default_val，未传default_val则抛错                                                                     | 无                                                      |
 | `setattr(obj, attr_name, val)`                | 函数   | 设置对象attr_name属性值为val，直接修改当前对象属性表                                                                                         | 无                                                      |
 | `delattr(obj, attr_name)`                     | 函数   | 删除对象attr_name属性，属性不存在则抛错                                                                                                 | 无                                                      |
 | `hasattr(obj, attr_name, current_only=False)` | 函数   | 判断对象是否存在attr_name属性(含原型链查找, 通过设置 `current_only`属性为 `True` 取消按原型链查找），返回Bool类型                                             | 无                                                      |
 | `ischild(obj, parent_obj)`                    | 函数   | 判断obj的原型链中是否包含parent_obj，返回Bool类型                                                                                        | 无                                                      |
 | `help(key="")`                                | 函数   | 无参时返回总帮助文档；传入key时返回对应内置对象/语法的帮助信息                                                                                        | 无                                                      |
-| `range(start=0, end, step=1)`                 | 函数   | 生成整数序列迭代器，包含start，不包含end，步长为step，支持for循环遍历                                                                               | 无                                                      |
+| `range(start=0, end, step=1)`                 | 函数   | 生成整数序列列表，包含start，不包含end，步长为step                                                                              | 无                                                      |
 | `cmd(inst_name, inst_args={})`                | 函数   | 执行shell指令，inst_name为指令名，inst_args为指令参数 (List/Dict)                                                                                  | 无                                                      |
 | `create(obj=parent)`                          | 函数   | 创建一个 `__parent__`属性为obj的空对象                                                                                              | 无                                                      |
 | `hash(obj)`                                   | 函数   | 获取对象的哈希值                                                                                                                   | 无                                                        |
