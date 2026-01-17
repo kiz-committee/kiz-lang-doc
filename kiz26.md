@@ -359,6 +359,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `range(start=0, end, step=1)`                 | 函数   | 生成整数序列迭代器，包含start，不包含end，步长为step，支持for循环遍历                                                                               | 无                                                      |
 | `cmd(inst_name, inst_args={})`                | 函数   | 执行shell指令，inst_name为指令名，inst_args为指令参数 (List/Dict)                                                                                  | 无                                                      |
 | `create(obj=parent)`                          | 函数   | 创建一个 `__parent__`属性为obj的空对象                                                                                              | 无                                                      |
+| `hash(obj)`                                   | 函数   | 获取对象的哈希值                                                                                                                   | 无                                                        |
 | `Int`                                         | 基本类型 | 无限精度整数类型，支持任意大小整数运算                                                                                                      | `+ - * / ^ % == > < Int(other_type_obj)`               |
 | `Decimal`                                     | 基本类型 | 无限精度小数类型，避免浮点数精度丢失问题                                                                                                     | `+ - * / ^ % == > < Decimal(other_type_obj)`           |
 | `Str`                                         | 基本类型 | 字符串类型(除魔术方法外的其他方法<br>`startswith` `endswith` `isnum` `isalpha` `find` `map` `count` `filter` )                           | `+ * == Str[idx] Str(other_type_obj)`                  |
@@ -398,6 +399,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `__setitem__`          | 函数   | 重载下标赋值(`obj[idx] = val`） |
 | `__next__`             | 函数   | 迭代器方法(支持 `for` 循环）    |
 | `__mutable__`         | 函数   | 判断对象可变性，用于决定引用/拷贝对象 |
+| `__hash__`            | 函数   | 获取对象的哈希值                    |
 | `__name__`             | 字符串  | 设置模块名                       |
 
 
