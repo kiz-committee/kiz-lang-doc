@@ -47,7 +47,7 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 
 直接运行kiz.exe，在弹出的repl窗口输入
 ```
->>> print("Hello World")
+>>>print("Hello World")
 ```
 
 ---
@@ -74,6 +74,10 @@ x.contains("7")
 x = 0
 x = 0.1
 x = "Hello World"
+x = m"
+many many text
+many many text
+" # 跨行字符串
 x = True
 x = False
 x = Nil
@@ -295,9 +299,7 @@ import std_lib_name
 
 当前标准模块表
 ```
-builtins
-math
-runtime
+io
 ```
 
 从指定路径导入模块
@@ -354,6 +356,8 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `a and b`  | 短路逻辑与，先判断a的`__bool__`，为True时再判断b，否则直接返回a                                                              |
 | `a or b`   | 短路逻辑或，先判断a的`__bool__`，为False时再判断b，否则直接返回a                                                             |
 | `not a`    | 逻辑非，对a的`__bool__`结果取反                                                                                 |
+| `a is b`   | 判断a, b是不是同一个对象                                                                                            |
+| `a in b`   | 包含运算，调用对象的`contains`方法                                                                               ｜
 | `a[b]`     | 下标访问，调用对象`__getitem__`魔术方法                                                                            |
 | `a[b] = c` | 下标赋值，调用对象`__setitem__`魔术方法                                                                            |
 | `a(b)`     | 函数/方法调用，调用对象`__call__`魔术方法；方法调用时自动绑定调用源对象为第一个参数                                                       |
@@ -376,14 +380,15 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `delattr(obj, attr_name)`                     | 函数   | 删除对象attr_name属性，属性不存在则抛错                                                                                                 | 无                                                      |
 | `hasattr(obj, attr_name, current_only=False)` | 函数   | 判断对象是否存在attr_name属性(含原型链查找, 通过设置 `current_only`属性为 `True` 取消按原型链查找），返回Bool类型                                             | 无                                                      |
 | `ischild(obj, parent_obj)`                    | 函数   | 判断obj的原型链中是否包含parent_obj，返回Bool类型                                                                                        | 无                                                      |
-| `help(key="")`                                | 函数   | 无参时返回总帮助文档；传入key时返回对应内置对象/语法的帮助信息                                                                                        | 无                                                      |
+| `help()`                                      | 函数   | 无参时返回总帮助文档                                                                                       | 无                                                      |
 | `range(start=0, end, step=1)`                 | 函数   | 生成整数序列列表，包含start，不包含end，步长为step                                                                              | 无                                                      |
-| `cmd(inst_name, inst_args={})`                | 函数   | 执行shell指令，inst_name为指令名，inst_args为指令参数 (List/Dict)                                                                                  | 无                                                      |
+| `cmd(inst_name)`                              | 函数   | 执行shell指令，inst_name为指令名，inst_args为指令参数 (List/Dict)                                                                                  | 无                                                      |
 | `create(obj=parent)`                          | 函数   | 创建一个 `__parent__`属性为obj的空对象                                                                                              | 无                                                      |
+| `attr(obj)                                    | 函数   | 返回一个包含对象的所有属性的字典                                                                              |   无                            |
 | `hash(obj)`                                   | 函数   | 获取对象的哈希值                                                                                                                   | 无                                                        |
 | `Int`                                         | 基本类型 | 无限精度整数类型，支持任意大小整数运算                                                                                                      | `+ - * / ^ % == > < Int(other_type_obj)`               |
-| `Decimal`                                     | 基本类型 | 无限精度小数类型，避免浮点数精度丢失问题                                                                                                     | `+ - * / ^ % == > < Decimal(other_type_obj)`           |
-| `Str`                                         | 基本类型 | 字符串类型(除魔术方法外的其他方法<br>`startswith` `endswith` `isnum` `isalpha` `find` `map` `count` `filter` )                           | `+ * == Str[idx] Str(other_type_obj)`                  |
+| `Decimal`                                     | 基本类型 | 无限精度小数类型，避免浮点数精度丢失问题(除魔术方法外的其他方法<br>`limit_div` `round_div`                                                                                                     | `+ - * / ^ % == > < Decimal(other_type_obj)`           |
+| `Str`                                         | 基本类型 | 字符串类型(除魔术方法外的其他方法<br>`startswith` `endswith` `isdigit` `isalpha` `find` `map` `count` `filter` `substr`)                           | `+ * == Str[idx] Str(other_type_obj)`                  |
 | `Nil`                                         | 基本类型 | 空值类型，唯一实例为`Nil`，表示无有效数据                                                                                                  | 无                                                      |
 | `Bool`                                        | 基本类型 | 布尔类型，仅有`True`和`False`两个实例，支持逻辑运算                                                                                         | `and or not ==`                                        |
 | `List`                                        | 基本类型 | 有序可变序列(动态数组），支持下标访问、增删元素；除魔术方法外的其他方法`foreach` `reverse` `extend` `pop` `insert` `find` `map` `count` `filter` `__next__` | `+ * == List[idx] List[idx]=item List(other_type_obj)` |
@@ -393,6 +398,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `NFunc`                                       | 基本类型 | 内置函数(使用C++实现的函数），性能优于用户定义函数                                                                                              | 无                                                      |
 | `Module`                                      | 基本类型 | 模块对象，存储模块内的变量、函数等成员，支持属性访问                                                                                               | 无                                                      |
 | `Error`                                       | 基本类型 | 错误基本对象，包含错误信息字符串与调用栈信息，所有错误类型的父对象                                                                                        | 无                                                      |
+| `__StopIter__`                                  | 特殊对象 | 作为迭代器终止的返回对象                                                                                                                    | 无                                                                           |
 
 
 ### 对象魔术名
@@ -409,17 +415,14 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `__eq__`               | 函数   | 重载 `==` 运算符                 |
 | `__gt__`               | 函数   | 重载 `>` 运算符                  |
 | `__lt__`               | 函数   | 重载 `<` 运算符                  |
-| `__ge__`               | 函数   | 重载 `>=` 运算符                 |
-| `__le__`               | 函数   | 重载 `<=` 运算符                 |
-| `__owner_module__`     | 模块   | 标注对象所属模块id(用于模块系统查找） |
+| `__owner_module__`     | 模块   | 标注对象所属模块对象(用于模块系统查找） |
 | `__call__`             | 函数   | 支持对象直接调用(`obj()`）      |
 | `__bool__`             | 函数   | 支持布尔判断(`if obj`）         |
 | `__str__`              | 函数   | 转换为字符串(`str(obj)`）       |
 | `__dstr__`             | 函数   | 返回调试字符串(类似 python 的 `repr`） |
 | `__getitem__`          | 函数   | 重载下标访问(`obj[idx]`）       |
 | `__setitem__`          | 函数   | 重载下标赋值(`obj[idx] = val`） |
-| `__next__`             | 函数   | 迭代器方法(支持 `for` 循环）    |
-| `__mutable__`         | 函数   | 判断对象可变性，用于决定引用/拷贝对象 |
+| `__next__`             | 函数   | 迭代器方法(支持 `for` 循环） 返回`__StopIter__`对象终止运算符   |
 | `__hash__`            | 函数   | 获取对象的哈希值                    |
 | `__name__`             | 字符串  | 设置模块名                       |
 
