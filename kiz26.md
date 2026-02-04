@@ -292,6 +292,7 @@ end
 
 @note: 未实现
 当try中有break continue时, 如果会跳转到try-catch-finally的, 会先执行finally块
+
 @note: 未实现
 当try中有return时, 会先执行finally块
 
@@ -441,6 +442,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 - `when .. => .. end` 模式匹配语句(具体语法待议)
 - `fn obj.a(this) ... end` 直接设置方法语句
 - `..obj` 解包表达式与剩余参数`fn foo(...a)`(收集入a, a的类型是List)
+
 **新工具**
 - 包管理器 / 跨语言包解释器
 - 多功能调试器
