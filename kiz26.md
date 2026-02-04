@@ -13,19 +13,19 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 1.  [快速使用指令](#快速使用指令)
 2.  [核心语法](#核心语法)
 
-    2.1  注释
+    2.1  [注释](#注释)
 
-    2.2  变量与表达式
+    2.2  [变量与表达式](#变量与表达式)
 
-    2.3  对象
+    2.3  [对象](#对象)
 
-    2.4  控制流
+    2.4  [控制流](#控制流)
 
-    2.5  函数
+    2.5  [函数](#函数)
 
-    2.6  错误处理
+    2.6  [错误处理](#错误处理)
 
-    2.7  模块系统
+    2.7  [模块系统](#模块系统)
 
 3.  [基本运算符](#基本运算符)
 4.  [内置对象](#内置对象)
@@ -131,7 +131,8 @@ object Dog
     # 重载对象的__call__实现类似Python __init__的特性
     fn __call__(this, n)
         # 创建一个__parent__属性指向Dog的对象并设置其name属性为参数n
-        o = create(this, {name=n})
+        o = create(this)
+        o.name = n
         return o
     end
     # 函数第一个参数指向调用源对象，建议命名为this
@@ -165,8 +166,8 @@ while expression
     statements
 end
 
-# obj必须是拥有__next__的对象
-for var_name : obj
+# obj必须是拥有__next__方法的对象
+for var_name in obj
     statements
 end
 ```
@@ -272,7 +273,7 @@ end
 throw expression
 ```
 
-注意: catch不会重复捕获
+注意: catch不会重复捕获，即catch在捕获到第一个符合期盼的错误后执行完catch块的内容后就跳转到finally
 
 ```
 try
@@ -289,8 +290,9 @@ finally
 end
 ```
 
+@note: 未实现
 当try中有break continue时, 如果会跳转到try-catch-finally的, 会先执行finally块
-
+@note: 未实现
 当try中有return时, 会先执行finally块
 
 ### 模块系统
@@ -311,9 +313,9 @@ import "other.kiz"
 
 路径搜索优先级
 ```
-1. 指定路径
-2. ../ 指定路径
-3. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / libs / 指定路径
+1. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / 当前文件路径 / 指定路径
+2. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / 指定路径
+3. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / kiz_libs / 指定路径
 ```
 
 ```
@@ -337,6 +339,7 @@ end
 
 使用模块成员
 ```
+import "other.kiz"
 other.x
 other.x = 0
 other.foo() # 调用模块子函数不会把module作为函数的第一个实际参数
@@ -400,7 +403,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `NFunc`                                       | 基本类型 | 内置函数(使用C++实现的函数），性能优于用户定义函数                                                                                              | 无                                                      |
 | `Module`                                      | 基本类型 | 模块对象，存储模块内的变量、函数等成员，支持属性访问                                                                                               | 无                                                      |
 | `Error`                                       | 基本类型 | 错误基本对象，包含错误信息字符串与调用栈信息，所有错误类型的父对象                                                                                        | 无                                                      |
-| `__StopIter__`                                  | 特殊对象 | 作为迭代器终止的返回对象                                                                                                                    | 无                                                                           |
+| `__StopIter__`                                | 特殊对象 | 作为迭代器终止的返回对象                                                                                                                    | 无                                                                           |
 
 
 ### 对象魔术名
@@ -425,18 +428,23 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `__getitem__`          | 函数   | 重载下标访问(`obj[idx]`）       |
 | `__setitem__`          | 函数   | 重载下标赋值(`obj[idx] = val`） |
 | `__next__`             | 函数   | 迭代器方法(支持 `for` 循环） 返回`__StopIter__`对象终止运算符   |
-| `__hash__`            | 函数   | 获取对象的哈希值                    |
+| `__hash__`             | 函数   | 获取对象的哈希值                    |
 | `__name__`             | 字符串  | 设置模块名                       |
 
 
 ---
 
 ## Kiz-2027版本功能规划
+**新特性**
 - 管道运算符 `a |> foo |> foo2` (适用于foo, foo2都只有一个参数时)
 - 模板字符串
 - `when .. => .. end` 模式匹配语句(具体语法待议)
 - `fn obj.a(this) ... end` 直接设置方法语句
-- `..obj` 解包表达式与剩余参数`fn foo(...a)`(收集入a这个List)
+- `..obj` 解包表达式与剩余参数`fn foo(...a)`(收集入a, a的类型是List)
+**新工具**
+- 包管理器 / 跨语言包解释器
+- 多功能调试器
+- 跨系统api
 ---
 
 文档编撰:  *azhz1107cat*
