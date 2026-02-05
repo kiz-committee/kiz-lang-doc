@@ -191,6 +191,15 @@ fn function_name(param1, param2)
 end
 ```
 
+包含剩余参数的函数
+
+**注意**: 剩余参数以`...`开头, 每个函数只能定义一个剩余参数, 且剩余参数必须放在参数列表的末尾, 接收剩余参数的是一个列表
+```
+fn function_name(param1, ...rest_param)
+        statements
+end
+```
+
 ```
 # 在没有任何形式参数时，fn foo()的签名可以简写为fn foo
 fn foo(m)
