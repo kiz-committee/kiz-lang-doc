@@ -80,6 +80,7 @@ x = m"
 many many text
 many many text
 " # 跨行字符串
+x = f"1 + 1 = {2}" # 模板字符串
 x = True
 x = False
 x = Nil
@@ -404,7 +405,7 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `Object`                                      | 基本类型 | 所有对象的根原型，提供基础属性查找与原型链机制                                                                                                  | `== Object[attr_name] Object[attr_name]=value`         |
 | `Int`                                         | 基本类型 | 无限精度整数类型，支持任意大小整数运算                                                                                                      | `+ - * / ^ % == > < Int(other_type_obj)`               |
 | `Decimal`                                   | 基本类型 | 无限精度小数类型，避免浮点数精度丢失问题(除魔术方法外的其他方法<br>`limit_div` `round_div` `approx_eq`                                                                                                   | `+ - * / ^ % == > < Decimal(other_type_obj)`           |
-| `Str`                                         | 基本类型 | 字符串类型(除魔术方法外的其他方法<br>`startswith` `endswith` `isdigit` `isalpha` `find` `map` `count` `filter` `substr`)                           | `+ * == Str[idx] Str(other_type_obj)`                  |
+| `Str`                                         | 基本类型 | 字符串类型(除魔术方法外的其他方法<br>`startswith` `endswith` `isdigit` `isalpha` `find` `map` `count` `filter` `substr` `format` `foreach`)                           | `+ * == Str[idx] Str(other_type_obj)`                  |
 | `Nil`                                         | 基本类型 | 空值类型，唯一实例为`Nil`，表示无有效数据                                                                                                  | 无                                                      |
 | `Bool`                                        | 基本类型 | 布尔类型，仅有`True`和`False`两个实例，支持逻辑运算                                                                                         | `and or not ==`                                        |
 | `List`                                        | 基本类型 | 有序可变序列(动态数组），支持下标访问、增删元素；除魔术方法外的其他方法`foreach` `reverse` `extend` `pop` `insert` `find` `map` `count` `filter` `__next__` | `+ * == List[idx] List[idx]=item List(other_type_obj)` |
