@@ -57,11 +57,11 @@ import math
 ```
 when name
     value => 
-       statement
+        statement
     value =>
-		    statement
-	   _ =>
-		    statement
+        statement
+    _ =>
+        statement
 end
 
 # 表达式形态
