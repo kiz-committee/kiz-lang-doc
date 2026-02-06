@@ -21,13 +21,13 @@ throw RuntimeError() # 此时ensure才被执行
 核心语法
 ```
 error name
-	ty = subname1 | subname2
+    ty = subname1 | subname2
 end
 ```
 示例
 ```
 error IOError
-	ty = FileNoFoundError | FileUnwriteError 
+    ty = FileNoFoundError | FileUnwriteError 
 end
 ```
 
@@ -36,13 +36,13 @@ end
 核心语法
 ```
 module name
-	sub1, sub2
+    sub1, sub2
 end
 ```
 示例
 ```
 module math
-	sin, cos, tan, e, pi
+    sin, cos, tan, e, pi
 end
 ```
 其他文件
@@ -56,19 +56,19 @@ import math
 核心语法
 ```
 when name
-	value => 
-		statement
-	value =>
-		statement
-	_ =>
-		statement
+    value => 
+       statement
+    value =>
+		    statement
+	   _ =>
+		    statement
 end
 
 # 表达式形态
 when name(
-	value => expression
-	value => expression
-		_ => expression
+value => expression
+value => expression
+_ => expression
 )
 ```
 
