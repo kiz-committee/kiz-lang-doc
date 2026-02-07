@@ -101,7 +101,7 @@ group Name
 end
 
 n = Name.member1(expression) # 可带值
-# 通过&符号来匹配携带的值
+# 通过with符号来匹配携带的值
 when n
     .member1 with expression => 
         statements
