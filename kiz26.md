@@ -30,7 +30,6 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 3.  [基本运算符](#基本运算符)
 4.  [内置对象](#内置对象)
 5.  [对象魔术名](#对象魔术名)
-6.  [Kiz-2027版本功能规划](#Kiz-2027版本功能规划)
 
 ## 快速使用指令
 通过 `kiz.exe` 可执行文件操作，支持以下命令：
@@ -315,24 +314,24 @@ import std_lib_name
 当前标准模块表
 ```
 io
+os
 ```
 
 从指定路径导入模块
 ```
-import "other.kiz"
+import name at "other.kiz"
 ```
 
 路径搜索优先级
 ```
 1. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / 当前文件路径 / 指定路径
 2. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / 指定路径
-3. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / kiz_libs / 指定路径
+3. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / ../../modules / 指定路径 / __main__.kiz
+4. Kiz可执行文件(kiz.exe/kiz.elf)所在目录 / ../../modules / 指定路径
 ```
 
 ```
 # 这是other.kiz
-# 设置模块名
-__name__ = "other"
 
 x = 100
 
@@ -350,7 +349,8 @@ end
 
 使用模块成员
 ```
-import "other.kiz"
+# 起名为other
+import other at "other.kiz"
 other.x
 other.x = 0
 other.foo() # 调用模块子函数不会把module作为函数的第一个实际参数
@@ -442,21 +442,6 @@ other.foo() # 调用模块子函数不会把module作为函数的第一个实际
 | `__hash__`             | 函数   | 获取对象的哈希值                    |
 | `__name__`             | 字符串  | 设置模块名                       |
 
-
----
-
-## Kiz-2027版本功能规划
-**新特性**
-- 管道运算符 `a |> foo |> foo2` (适用于foo, foo2都只有一个参数时)
-- 模板字符串
-- `when .. => .. end` 模式匹配语句(具体语法待议)
-- `fn obj.a(this) ... end` 直接设置方法语句
-- `..obj` 解包表达式与剩余参数`fn foo(...a)`(收集入a, a的类型是List)
-
-**新工具**
-- 包管理器 / 跨语言包解释器
-- 多功能调试器
-- 跨系统api
 ---
 
 文档编撰:  *azhz1107cat*
