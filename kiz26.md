@@ -282,39 +282,41 @@ end
 throw expression
 ```
 
-注意: catch不会重复捕获，即catch在捕获到第一个符合期盼的错误后执行完catch块的内容后就跳转到finally
+注意: catch不会重复捕获，即catch在捕获到第一个符合期盼的错误后执行完catch块的内容后就跳转到结束
 
 ```
 try
     # do something
 
-catch var_name: ErrorBasedObject
+catch var_name (ErrorName1)
     # do something
 	
-catch var_name: Error2BasedObject
-    # do something
-
-finally
+catch var_name (ErrorName2)
     # do something
 end
 ```
 
-@note: 未实现
-当try中有break continue时, 如果会跳转到try-catch-finally的, 会先执行finally块
+延时资源释放语法
+```
+ensure expression
+```
+当函数返回或抛出错误，而离开当前函数作用域时，
+ensure中的表达式会被执行，表达式返回值会被抛弃
 
-@note: 未实现
-当try中有return时, 会先执行finally块
+如果函数作用于中有多个ensure语句，则会按声明顺序倒序执行
 
 ### 模块系统
 从标准模块表中导入模块
 ```
 import std_lib_name
+import std_module_name
 ```
 
 当前标准模块表
 ```
 io
-os
+builtins
+Hello
 ```
 
 从指定路径导入模块
