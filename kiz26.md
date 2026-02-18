@@ -55,9 +55,13 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 ## 核心语法
 
 ### 注释
-目前只支持单行注释
 ```
 # text
+
+/* text
+ * text
+ * text
+ * /
 ```
 
 ### 变量与表达式
@@ -75,11 +79,11 @@ x.contains("7")
 x = 0
 x = 0.1
 x = "Hello World"
-x = m"
+x = "
 many many text
 many many text
 " # 跨行字符串
-x = f"1 + 1 = {2}" # 模板字符串
+x = f"1 + 1 = {1+1}" # 模板字符串
 x = True
 x = False
 x = Nil
