@@ -1,25 +1,5 @@
 # kiz2027标准文档
 
-### 延时资源释放
-
-核心语法
-
-在作用域结束或当前作用域抛出异常时, ensure后的表达式会被执行
-
-(未来可能代替finally语法)
-```
-ensure expression
-```
-示例
-```
-f = open("foo.txt")
-ensure f.close()
-
-print("do something")
-throw RuntimeError() # 此时ensure才被执行
-
-```
-
 ### 错误集合定义
 核心语法
 ```
@@ -126,9 +106,3 @@ a or b or c
 
 ### GC
 基于分代式的垃圾回收器
-
-### VmFrame优化
-合并操作数栈和常量池为`locals_with_stack`变量(类似Python), 
-作为局部变量表和操作数栈的唯一基本动态数组
-
-以便优化速度
