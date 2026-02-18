@@ -46,7 +46,7 @@ kiz-lang 是一门 **面向对象(原型链模型）、强类型+动态类型** 
 
 直接运行kiz.exe，在弹出的repl窗口输入
 ```
->>>print("Hello World")
+>>> print("Hello World")
 ```
 
 **注意**：您可以在repl界面使用Shift+Enter键来换行实现多行输入
